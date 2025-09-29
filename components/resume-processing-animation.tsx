@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { JetBrains_Mono } from 'next/font/google'
 
 const jetbrainsMono = JetBrains_Mono({
@@ -16,7 +16,7 @@ export function ResumeProcessingAnimation({ onComplete }: ResumeProcessingAnimat
   const [currentStep, setCurrentStep] = useState(0)
   const [progress, setProgress] = useState(0)
 
-  const steps = [
+  const steps = useMemo(() => [
     { text: 'Resumes are being securely uploaded...', duration: 2000 },
     { text: 'Enriching with GitHub profiles...', duration: 2200 },
     { text: 'Extracting portfolio links...', duration: 2000 },
@@ -30,7 +30,7 @@ export function ResumeProcessingAnimation({ onComplete }: ResumeProcessingAnimat
     { text: 'Analyzing interest alignment...', duration: 1800 },
     { text: 'Calculating overall fit score...', duration: 2000 },
     { text: 'Candidates ranked successfully!', duration: 1500 }
-  ]
+  ], [])
 
   useEffect(() => {
     if (currentStep >= steps.length) {

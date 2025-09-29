@@ -6,7 +6,6 @@ import { Footer } from '@/components/footer'
 import { JetBrains_Mono } from 'next/font/google'
 import { useRouter } from 'next/navigation'
 import { ResumeProcessingAnimation } from '@/components/resume-processing-animation'
-import { extractPDFData } from '@/lib/pdfExtractor'
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -50,20 +49,6 @@ export default function ResumePage() {
       'SrijanTripathiResume (2).pdf',
       'Ujjwal_resume.pdf'
     ]
-    
-   const extractedDataPromises = resumeFiles.map(async (fileName) => {
-      try {
-        const response = await fetch(`/resumes/${fileName}`)
-        const blob = await response.blob()
-        const file = new File([blob], fileName, { type: 'application/pdf' })
-        
-        const extractedData = await extractPDFData(file)
-        return extractedData
-      } catch (error) {
-        console.error(`Error extracting ${fileName}:`, error)
-        return null
-      }
-    })
 
   const handleAnalyzeCandidates = () => {
     setIsAnalyzing(true)

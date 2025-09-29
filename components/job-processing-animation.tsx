@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { JetBrains_Mono } from 'next/font/google'
 
 const jetbrainsMono = JetBrains_Mono({
@@ -16,12 +16,12 @@ export function JobProcessingAnimation({ onComplete }: JobProcessingAnimationPro
   const [currentStep, setCurrentStep] = useState(0)
   const [progress, setProgress] = useState(0)
 
-  const steps = [
+ const steps = useMemo(() => [
     { text: 'Converting the JD into embeddings by our BERT model...', duration: 2500 },
     { text: 'Converted into embeddings', duration: 2000 },
     { text: 'Job Description posted', duration: 1500 },
     { text: 'Going to Next Step', duration: 1500 }
-  ]
+  ], [])
 
   useEffect(() => {
     if (currentStep >= steps.length) {
