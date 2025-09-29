@@ -6,6 +6,8 @@ import { Footer } from '@/components/footer'
 import { JetBrains_Mono } from 'next/font/google'
 import { useRouter } from 'next/navigation'
 import { ResumeProcessingAnimation } from '@/components/resume-processing-animation'
+import { extractPDFData } from '@/lib/pdfExtractor'
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -21,39 +23,17 @@ export default function ResumePage() {
   const handleLoadResumes = async () => {
     setIsLoadingResumes(true)
 
-    // Simulate loading resumes from the assets/ENGINEERING folder
+    // Load actual resume files from public folder
     setTimeout(() => {
       const resumes = [
-        '10030015.pdf',
-        '10219099.pdf',
-        '10624813.pdf',
-        '10712803.pdf',
-        '10985403.pdf',
-        '11890896.pdf',
-        '11981094.pdf',
-        '12011623.pdf',
-        '12022566.pdf',
-        '12472574.pdf',
-        '12488356.pdf',
-        '12518008.pdf',
-        '12748557.pdf',
-        '13149176.pdf',
-        '13264796.pdf',
-        '14049846.pdf',
-        '14208561.pdf',
-        '14554542.pdf',
-        '15139979.pdf',
-        '15601399.pdf',
-        '15858254.pdf',
-        '15941675.pdf',
-        '16803215.pdf',
-        '16911115.pdf',
-        '17043822.pdf',
-        '17103000.pdf',
-        '17108676.pdf',
-        '17488801.pdf',
-        '17926546.pdf',
-        '18753387.pdf'
+        'aayush resume17.pdf',
+        'Divyanshi_Resume (21).pdf',
+        'JD_Citi_Bank.pdf',
+        'nishu_resume.pdf',
+        'Pradeep_Kumar_Resume.pdf',
+        'Resume_Arun.pdf',
+        'SrijanTripathiResume (2).pdf',
+        'Ujjwal_resume.pdf'
       ]
       setLoadedResumes(resumes)
       setResumesLoaded(true)
@@ -61,17 +41,46 @@ export default function ResumePage() {
     }, 2000)
   }
 
-    const handleAnalyzeCandidates = () => {
-        setIsAnalyzing(true)
-    }
+   const resumeFiles = [
+      'aayush resume17.pdf',
+      'Divyanshi_Resume (21).pdf',
+      'nishu_resume.pdf',
+      'Pradeep_Kumar_Resume.pdf',
+      'Resume_Arun.pdf',
+      'SrijanTripathiResume (2).pdf',
+      'Ujjwal_resume.pdf'
+    ]
+    
+   const extractedDataPromises = resumeFiles.map(async (fileName) => {
+      try {
+        const response = await fetch(`/resumes/${fileName}`)
+        const blob = await response.blob()
+        const file = new File([blob], fileName, { type: 'application/pdf' })
+        
+        const extractedData = await extractPDFData(file)
+        return extractedData
+      } catch (error) {
+        console.error(`Error extracting ${fileName}:`, error)
+        return null
+      }
+    })
 
-    const handleAnalysisComplete = () => {
-        router.push('/candidates')
-    }   
+  const handleAnalyzeCandidates = () => {
+    setIsAnalyzing(true)
+  }
 
-    if (isAnalyzing) {
-        return <ResumeProcessingAnimation onComplete={handleAnalysisComplete} />
-    }
+  const handleAnalysisComplete = () => {
+    router.push('/candidates')
+  }   
+
+  if (isAnalyzing) {
+    return <ResumeProcessingAnimation onComplete={handleAnalysisComplete} />
+  }
+
+  const handleViewResume = (resumeName: string) => {
+    // Open PDF in new tab
+    window.open(`/resumes/${resumeName}`, '_blank')
+  }
 
   return (
     <div className={`${jetbrainsMono.className} min-h-screen flex flex-col`}>
@@ -83,7 +92,7 @@ export default function ResumePage() {
           <div className="mb-12 text-center">
             <h1 className="text-5xl font-bold mb-4">Load Student Resumes</h1>
             <p className="text-xl text-muted-foreground">
-              Load resumes from the Engineering student database, we have used our own databse to show you how our process works
+              Load resumes from the Engineering student database, we have used our own database to show you how our process works
             </p>
           </div>
 
@@ -154,7 +163,7 @@ export default function ResumePage() {
                   <div className="text-2xl mb-2">📁</div>
                   <h4 className="font-semibold mb-1">Database Access</h4>
                   <p className="text-sm text-muted-foreground">
-                    Access to 30+ engineering student resumes
+                    Access to 8 engineering student resumes
                   </p>
                 </div>
                 <div className="p-4 bg-muted/20 rounded-lg">
@@ -202,24 +211,32 @@ export default function ResumePage() {
                   <h3 className="font-semibold text-lg">Loaded Resume Files</h3>
                 </div>
                 <div className="max-h-[500px] overflow-y-auto">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4">
                     {loadedResumes.map((resume, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 p-3 border border-border rounded hover:bg-muted/20 transition-colors"
+                        className="flex items-center justify-between gap-2 p-4 border border-border rounded hover:bg-muted/20 transition-colors"
                       >
-                        <svg
-                          className="w-5 h-5 text-red-500 flex-shrink-0"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <svg
+                            className="w-5 h-5 text-red-500 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="text-sm truncate">{resume}</span>
+                        </div>
+                        <button
+                          onClick={() => handleViewResume(resume)}
+                          className="px-3 py-1 text-xs bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded transition-colors flex-shrink-0"
                         >
-                          <path
-                            fillRule="evenodd"
-                            d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span className="text-sm truncate">{resume}</span>
+                          View
+                        </button>
                       </div>
                     ))}
                   </div>
