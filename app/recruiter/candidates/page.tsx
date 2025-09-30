@@ -10,14 +10,6 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 
-const DashboardHeader = () => (
-  <header className="border-b border-gray-200 bg-white">
-    <div className="px-8 py-4">
-      <h1 className="text-2xl font-bold">RecruiterPro</h1>
-    </div>
-  </header>
-)
-
 const Footer = () => (
   <footer className="border-t border-gray-200 bg-white py-6">
     <div className="text-center text-sm text-gray-600">
@@ -91,17 +83,12 @@ export default function CandidatesPage() {
 
   return (
     <div className={`${jetbrainsMono.className} min-h-screen flex flex-col bg-white`}>
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
 
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
           {/* Title */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Recruiter Dashboard</h1>
-            <p className="text-gray-600">
-              Manage your candidates and track performance
-            </p>
-          </div>
+          
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -271,7 +258,7 @@ export default function CandidatesPage() {
         </div>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

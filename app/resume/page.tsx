@@ -55,7 +55,7 @@ export default function ResumePage() {
   }
 
   const handleAnalysisComplete = () => {
-    router.push('/candidates')
+    router.push('/recruiter/candidates')
   }   
 
   if (isAnalyzing) {
