@@ -10,13 +10,6 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 
-const Footer = () => (
-  <footer className="border-t border-gray-200 bg-white py-6">
-    <div className="text-center text-sm text-gray-600">
-      © 2025 RecruiterPro. All rights reserved.
-    </div>
-  </footer>
-)
 
 export default function CandidatesPage() {
   const [candidates] = useState(CANDIDATES_DATA)

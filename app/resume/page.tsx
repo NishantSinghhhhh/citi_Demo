@@ -40,15 +40,6 @@ export default function ResumePage() {
     }, 2000)
   }
 
-   const resumeFiles = [
-      'aayush resume17.pdf',
-      'Divyanshi_Resume (21).pdf',
-      'nishu_resume.pdf',
-      'Pradeep_Kumar_Resume.pdf',
-      'Resume_Arun.pdf',
-      'SrijanTripathiResume (2).pdf',
-      'Ujjwal_resume.pdf'
-    ]
 
   const handleAnalyzeCandidates = () => {
     setIsAnalyzing(true)

@@ -9,7 +9,41 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 })
 
-const INITIAL_INTERVIEWS = [
+interface Interview {
+  id: number
+  candidateName: string
+  college: string
+  position: string
+  date: string
+  time: string
+  status: string
+  interviewer: string
+  round: string
+  feedback?: string
+}
+
+interface ExcelRow {
+  'Candidate Name'?: string
+  candidateName?: string
+  College?: string
+  college?: string
+  Position?: string
+  position?: string
+  Date?: string
+  date?: string
+  Time?: string
+  time?: string
+  Status?: string
+  status?: string
+  Interviewer?: string
+  interviewer?: string
+  Round?: string
+  round?: string
+  Feedback?: string
+  feedback?: string
+}
+
+const INITIAL_INTERVIEWS: Interview[] = [
   {
     id: 1,
     candidateName: "Rajesh Kumar",
@@ -143,7 +177,7 @@ export default function Page() {
       const jsonData = XLSX.utils.sheet_to_json(worksheet)
 
       // Map Excel data to interview format
-      const newInterviews = jsonData.map((row: any, index: number) => ({
+      const newInterviews: Interview[] = (jsonData as ExcelRow[]).map((row, index) => ({
         id: interviews.length + index + 1,
         candidateName: row['Candidate Name'] || row['candidateName'] || '',
         college: row['College'] || row['college'] || '',

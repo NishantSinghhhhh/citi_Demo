@@ -1,5 +1,5 @@
 import { JetBrains_Mono } from 'next/font/google'
-import AppSidebar from "../../../components/AppSidebar"
+// import AppSidebar from "../../../components/AppSidebar"
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
